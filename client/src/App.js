@@ -14,6 +14,15 @@ import Profile from './pages/Profile';
 import Signup from './pages/Signup';
 
 const client = new ApolloClient({
+  request: operation => {
+    const token = localStorage.getItem('id_token');
+    /* we use the .setContext() method to set the HTTP request headers of every request to include the token, whether the request needs it or not. */
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    });
+  },
   uri: '/graphql'
 });
 
